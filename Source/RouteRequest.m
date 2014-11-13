@@ -5,6 +5,7 @@
 	HTTPMessage *message;
 }
 
+@synthesize message = message;
 @synthesize params;
 
 - (id)initWithHTTPMessage:(HTTPMessage *)msg parameters:(NSDictionary *)parameters {

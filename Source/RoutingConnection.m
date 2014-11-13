@@ -3,8 +3,13 @@
 #import "HTTPMessage.h"
 #import "HTTPResponseProxy.h"
 
+@interface RoutingConnection ()
+// Don't crash on stopping routing server with active connections.
+@property (atomic, weak) RoutingHTTPServer *http;
+@end
+
+
 @implementation RoutingConnection {
-	__unsafe_unretained RoutingHTTPServer *http;
 	NSDictionary *headers;
 }
 
@@ -13,14 +18,14 @@
 		NSAssert([config.server isKindOfClass:[RoutingHTTPServer class]],
 				 @"A RoutingConnection is being used with a server that is not a RoutingHTTPServer");
 
-		http = (RoutingHTTPServer *)config.server;
+		self.http = (RoutingHTTPServer *)config.server;
 	}
 	return self;
 }
 
 - (BOOL)supportsMethod:(NSString *)method atPath:(NSString *)path {
 
-	if ([http supportsMethod:method])
+	if ([self.http supportsMethod:method])
 		return YES;
 
 	return [super supportsMethod:method atPath:path];
@@ -56,7 +61,7 @@
 		}
 	}
 
-	RouteResponse *response = [http routeMethod:method withPath:path parameters:params request:request connection:self];
+	RouteResponse *response = [self.http routeMethod:method withPath:path parameters:params request:request connection:self];
 	if (response != nil) {
 		headers = response.headers;
 		return response.proxiedResponse;
@@ -65,7 +70,7 @@
 	// Set a MIME type for static files if possible
 	NSObject<HTTPResponse> *staticResponse = [super httpResponseForMethod:method URI:path];
 	if (staticResponse && [staticResponse respondsToSelector:@selector(filePath)]) {
-		NSString *mimeType = [http mimeTypeForPath:[staticResponse performSelector:@selector(filePath)]];
+		NSString *mimeType = [self.http mimeTypeForPath:[staticResponse performSelector:@selector(filePath)]];
 		if (mimeType) {
 			headers = [NSDictionary dictionaryWithObject:mimeType forKey:@"Content-Type"];
 		}
@@ -88,7 +93,7 @@
 }
 
 - (void)setHeadersForResponse:(HTTPMessage *)response isError:(BOOL)isError {
-	[http.defaultHeaders enumerateKeysAndObjectsUsingBlock:^(id field, id value, BOOL *stop) {
+	[self.http.defaultHeaders enumerateKeysAndObjectsUsingBlock:^(id field, id value, BOOL *stop) {
 		[response setHeaderField:field value:value];
 	}];
 

@@ -3,6 +3,7 @@
 
 @interface RouteRequest : NSObject
 
+@property (nonatomic, readonly) HTTPMessage *message;
 @property (nonatomic, readonly) NSDictionary *headers;
 @property (nonatomic, readonly) NSDictionary *params;
 
