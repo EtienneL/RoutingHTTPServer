@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'RoutingHTTPServer'
-  s.version      = '1.0.1'
+  s.version      = '1.0.2'
   s.summary      = 'A routing API for CocoaHTTPServer.'
   s.homepage     = 'https://github.com/mattstevens/RoutingHTTPServer'
   s.license      = 'MIT'
