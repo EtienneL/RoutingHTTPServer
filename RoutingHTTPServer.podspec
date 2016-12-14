@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = 'https://github.com/mattstevens/RoutingHTTPServer'
   s.license      = 'MIT'
   s.author       = { 'Matt Stevens' => 'matt@alloysoft.com' }
-  s.source       = { :git => 'https://github.com/mattstevens/RoutingHTTPServer.git', :tag => 'v1.0.0' }
+  s.source       = { :git => 'https://github.com/etiennel/RoutingHTTPServer.git', :branch => 'master' }
   s.source_files = 'Source'
 
   s.requires_arc = true
