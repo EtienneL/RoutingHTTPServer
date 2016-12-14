@@ -5,6 +5,8 @@
 
 @interface RoutingConnection ()
 // Don't crash on stopping routing server with active connections.
+	
+	// this is version 1.0.2
 @property (atomic, weak) RoutingHTTPServer *http;
 @end
 
